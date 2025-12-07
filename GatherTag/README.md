@@ -24,10 +24,10 @@ GatherTag 是一个魔兽世界资源点标记插件，适配游戏版本 3.80.0
 ### 项目结构
 
 GatherTag/ 
-  ├── GatherTag.toc # 插件信息文件 
-  ├── GatherTag.lua # 主程序入口 
-  ├── Collector.lua # 数据收集模块 
-  ├── Display.lua # 显示模块 
-  ├── Config.lua # 配置模块 
-  ├── PlusLogger.lua # 日志模块 
-  ├── GatherTag.xml # UI定义文件
+  ├── GatherTag.toc # 插件信息文件  
+  ├── GatherTag.lua # 主程序入口  
+  ├── Collector.lua # 数据收集模块  
+  ├── Display.lua # 显示模块  
+  ├── Config.lua # 配置模块  
+  ├── PlusLogger.lua # 日志模块  
+  ├── GatherTag.xml # UI定义文件  
