@@ -1,0 +1,14 @@
+## Interface: 38000
+## Version: 0.1.0
+## Title: GatherTag
+## Author: stk_tianwen
+## Notes: 资源点标记插件基础框架（适配游戏版本 3.80.0）
+## SavedVariables: GatherTagDB, GatherTagHerbDB, GatherTagMineDB, GatherTagFishDB, GatherTagGasDB
+## SavedVariablesPerCharacter: GatherTagCharCfgDB
+
+
+GatherTag.lua
+Collector.lua
+Display.lua
+Config.lua
+GatherTag.xml

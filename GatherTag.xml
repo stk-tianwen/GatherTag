@@ -1,0 +1,11 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+	<Frame name="GatherTagPinTemplate" hidden="true" enableMouse="true" mixin="GatherTagPinMixin" virtual="true">
+		<Size x="12" y="12"/>
+		<Layers>
+			<Layer level="OVERLAY">
+				<Texture parentKey="texture" setAllPoints="true"/>
+			</Layer>
+		</Layers>
+	</Frame>
+</Ui>
