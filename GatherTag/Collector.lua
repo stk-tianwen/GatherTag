@@ -13,6 +13,9 @@ local abs = math.abs
 
 local C_Map = C_Map
 
+local LEVEL = GatherTag.LEVEL
+local Logger = GatherTag.Logger
+
 local NODE_TYPE_MINE = GatherTag.NODE_TYPE_MINE
 local NODE_TYPE_HERB = GatherTag.NODE_TYPE_HERB
 local NODE_TYPE_GAS = GatherTag.NODE_TYPE_GAS
@@ -115,12 +118,12 @@ local GATHER_SPELL_IDS = {
 		[50310] = true, -- 采矿(宗师级)
 	},
 	[NODE_TYPE_HERB] = {
-		[2382] = true, -- 采药 初级
-		[2383] = true, -- 采药 中级
-		[2384] = true, -- 采药 高级
-		[10249] = true, -- 采药 专家级
+		[2366] = true, -- 采药 初级
+		[2368] = true, -- 采药 中级
+		[2369] = true, -- 采药 高级
+		[2371] = true, -- 采药 专家级
 		[3570] = true, -- 采药 大师级
-		[50309] = true, -- 采药(宗师级)
+		[11993] = true, -- 采药(宗师级)
 	},
 	[NODE_TYPE_GAS] = {
   	[30427] = true, -- 提炼气体
@@ -128,11 +131,14 @@ local GATHER_SPELL_IDS = {
   -- [7731] = true, -- 钓鱼
 }
 
+-- 寻找草药
+local SPELL_FIND_HERB = 2383
+
 local cachePin = nil
 
 local MIN_SAME_DIST = 0.01
 function Collector:AddNode(nodeType, node)
-  -- print("GatherTag: 添加资源点 ->", nodeType, node.x, node.y, GatherTag.currentMapID)
+  Logger("" .. nodeType .. node.x .. node.y .. GatherTag.currentMapID, LEVEL.DEBUG)
 
   local nodes = GatherTag.NodeDB[nodeType][GatherTag.currentMapID]
   -- print("GatherTag: 资源点数量 ->", #nodes)
@@ -145,7 +151,7 @@ function Collector:AddNode(nodeType, node)
   end
 
   nodes[#nodes + 1] = node
-  -- print("GatherTag: 添加后资源点数量 ->", #nodes)
+  Logger("添加后资源点数量 ->" .. #nodes, LEVEL.INFO)
 end
 
 local function GetNodeTypeBySpellID(spellID)
@@ -158,7 +164,7 @@ local function GetNodeTypeBySpellID(spellID)
 end
 
 local function HandleUnitSpellcastSucceeded(_, _, spellID)
-	-- print("GatherTag: UNIT_SPELLCAST_SUCCEEDED (", spellID, ")", GetSpellInfo(spellID))
+	Logger("UNIT_SPELLCAST_SUCCEEDED (" .. spellID .. ")" .. GetSpellInfo(spellID), LEVEL.DEBUG)
 	local nodeType = GetNodeTypeBySpellID(spellID)
   if nodeType then
     -- 获取当前地图 ID
@@ -181,8 +187,7 @@ local function HandleUnitSpellcastSucceeded(_, _, spellID)
 			nodeType = nodeType,
     }
 		
-    -- print("Cached Pin:", cachePin.x, cachePin.y, cachePin.time)
-    -- print("GatherTag: UNIT_SPELLCAST_SUCCEEDED (", spellID, ")", GetSpellInfo(spellID))
+    Logger("UNIT_SPELLCAST_SUCCEEDED (" .. spellID .. ")" .. GetSpellInfo(spellID), LEVEL.DEBUG)
   end
 end
 
@@ -191,10 +196,11 @@ local function HandleChatMsgLoot(text)
   -- 在采矿时系统消息是“你得到了物品|cffffffff|Hitem:2770:0:0:0:0:0:0:0:70|h[铜矿石]|h|rx2。” 这里是“你得到了”
 	-- 在提炼气团的时候消息是“你获得了物品|cffffffff|Hitem:36909:0:0:0:0:0:0:0:70|h[空气微粒]|h|rx2。” 这里是“你获得了”
   -- 如果要适配更多采集类型和适配多语言，就需要采取更宽泛的匹配模式。
-	-- print("GatherTag: ", text:gsub("|", "||"))
+	Logger(text:gsub("|", "||"))
   local itemID = tonumber(string.match(text, "^你.-了.-Hitem:(%d+)"))
+  Logger(itemID, LEVEL.DEBUG)
   local item = ITEM_WHITELIST[itemID]
-  -- print("GatherTag: 获取物品信息 ->", itemID, item, cachePin)
+  Logger("item type:" .. (item and item.nodeType or "nil") .. " cachePin.nodeType: ".. (cachePin and cachePin.nodeType or "nil"), LEVEL.DEBUG)
   if itemID and item and cachePin and cachePin.nodeType == item.nodeType then
     cachePin.itemID = itemID
     cachePin.itemIcon = item.icon

@@ -69,7 +69,7 @@ local function HandlePlayerLogin()
   -- 初始化保存变量
   if not GatherTagDB then 
     GatherTagDB = {
-      profile = { enabled = true, debug = false, },
+      profile = { enabled = true,},
       version = ADDON_VERSION,
     } 
   end
@@ -82,6 +82,8 @@ local function HandlePlayerLogin()
     [NODE_TYPE_HERB] = GatherTagHerbDB,
     [NODE_TYPE_GAS] = GatherTagGasDB,
   }
+
+  GatherTag.trace = false
 end
 
 -- ZONE_CHANGED_NEW_AREA 事件可能会触发多次，例如出副本或者跨大陆、跨世界切换
@@ -158,6 +160,23 @@ function GatherTag:UnregisterEvent(event, callback)
   end
 end
 
+GatherTag.LEVEL = {
+  DEBUG = 1,
+  INFO = 2,
+  WARN = 3,
+  ERROR = 4,
+}
+
+function GatherTag.Logger( msg, level )
+  if GatherTag.trace then
+    local levelColor = {"ffcccccc", "ffffffff", "ffffff00", "ffff0000"}
+
+    local l = tonumber(level) or GatherTag.LEVEL.INFO
+    local color = levelColor[level] or levelColor[2]
+    print("|cFF00FF00GatherTag:|r|c"..color..msg.."|r")
+  end
+end
+
 --======================== SlashCmdList Function =========================
 
 function GatherTag.PrintUsage()
@@ -220,12 +239,17 @@ function GatherTag.ClearNode(args)
   end
 end
 
+function GatherTag.Debug( args )
+  GatherTag.trace = not GatherTag.trace
+  print("|cFF00FF00GatherTag:|r 调试功能 " .. (GatherTag.trace and "打开" or "关闭"))
+end
+
 local SLASH_COMMAND_FUNCTIONS = {
   ["count"] = GatherTag.PrintCurrentMapNodeInfo,
   ["on"] = GatherTag.EnableShowNode,
   ["off"] = GatherTag.EnableShowNode,
   ["clear"] = GatherTag.ClearNode,
-  ["debug"] = function () GatherTagDB.profile.debug = not GatherTagDB.profile.debug end,
+  ["debug"] = GatherTag.Debug,
   ["help"] = GatherTag.PrintUsage,
 }
 
