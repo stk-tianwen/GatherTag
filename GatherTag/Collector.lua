@@ -45,7 +45,7 @@ local ITEM_WHITELIST = {
 	[2447] = {nodeType = NODE_TYPE_HERB, icon = 133939}, -- 宁神花
 	[765] = {nodeType = NODE_TYPE_HERB, icon = 134190}, -- 银叶草
 	[2449] = {nodeType = NODE_TYPE_HERB, icon = 134187}, -- 地根草
-	[785] = {nodeType = NODE_TYPE_HERB, icon = 134436}, -- 魔皇草
+	[785] = {nodeType = NODE_TYPE_HERB, icon = 133436}, -- 魔皇草
 	[2450] = {nodeType = NODE_TYPE_HERB, icon = 134412}, -- 石楠草
 	-- [2452] = {nodeType = NODE_TYPE_HERB, icon = 134184}, -- 雨燕草，伴生草
 	[3820] = {nodeType = NODE_TYPE_HERB, icon = 134191}, -- 荆棘藻
